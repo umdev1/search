@@ -1,0 +1,6 @@
+com\example\search\data\Content.class
+com\example\search\config\SwaggerConfig.class
+com\example\search\rest\v1\SearchResource.class
+com\example\search\main\SearchApplication.class
+com\example\search\data\types\Contenttype.class
+com\example\search\rest\v1\SearchResource$1.class
