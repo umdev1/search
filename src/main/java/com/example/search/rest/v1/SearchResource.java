@@ -108,14 +108,23 @@ public class SearchResource {
 	 */
 	@Async("asyncExecutor")
 	private CompletableFuture<List<Content>> getBooks(String query) {
-
-		String result = restTemplate.getForObject(
-				"https://www.googleapis.com/books/v1/volumes?q=" + query + "&maxResults=" + maxResults, String.class);
-		LOGGER.info(result);
-		JSONObject obj = new JSONObject(result);
-
-		JSONArray items = obj.getJSONArray("items");
+		JSONObject obj = null;
+		JSONArray items = null;
+		String result = null;
 		List<Content> books = new ArrayList<Content>();
+		try {
+			result = restTemplate.getForObject(
+					"https://www.googleapis.com/books/v1/volumes?q=" + query + "&maxResults=" + maxResults,
+					String.class);
+			LOGGER.info(result);
+			obj = new JSONObject(result);
+
+			items = obj.getJSONArray("items");
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
 		for (int i = 0; i < items.length(); i++) {
 
 			try {
@@ -142,21 +151,34 @@ public class SearchResource {
 	 */
 	@Async("asyncExecutor")
 	private CompletableFuture<List<Content>> getAlbums(String query) {
-		String result = restTemplate.getForObject(
-				"https://itunes.apple.com/search?term=+" + query + "&entity=album&limit=" + maxResults, String.class);
-		LOGGER.info(result);
+		String result = null;
 		List<Content> albums = new ArrayList<Content>();
-		JSONObject obj = new JSONObject(result);
-		JSONArray items = obj.getJSONArray("results");
-		for (int i = 0; i < items.length(); i++) {
-			Content content = new Content();
+		JSONObject obj = null;
+		JSONArray items = null;
+		try {
+			result = restTemplate.getForObject(
+					"https://itunes.apple.com/search?term=+" + query + "&entity=album&limit=" + maxResults,
+					String.class);
+			LOGGER.info(result);
 
-			content.setTitle(items.getJSONObject(i).getString("collectionName"));
-			content.setCreator(items.getJSONObject(i).getString("artistName"));
-			content.setType(Contenttype.ALBUM);
-			LOGGER.info(items.getJSONObject(i).getString("collectionName"));
-			LOGGER.info(items.getJSONObject(i).getString("artistName"));
-			albums.add(content);
+			obj = new JSONObject(result);
+			items = obj.getJSONArray("results");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		for (int i = 0; i < items.length(); i++) {
+			try {
+				Content content = new Content();
+				content.setTitle(items.getJSONObject(i).getString("collectionName"));
+				content.setCreator(items.getJSONObject(i).getString("artistName"));
+				content.setType(Contenttype.ALBUM);
+				LOGGER.info(items.getJSONObject(i).getString("collectionName"));
+				LOGGER.info(items.getJSONObject(i).getString("artistName"));
+				albums.add(content);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 
 		}
 
