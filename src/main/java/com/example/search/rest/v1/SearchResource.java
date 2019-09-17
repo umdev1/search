@@ -66,8 +66,8 @@ public class SearchResource {
 
 		List<Content> contents = new ArrayList<Content>();
 		LOGGER.info("start searching ..");
-		if (env.getProperty("books.max.results") != null) {
-			maxResults = Integer.parseInt(env.getProperty("books.max.results"));
+		if (env.getProperty("max.results") != null) {
+			maxResults = Integer.parseInt(env.getProperty("max.results"));
 		} else {
 			maxResults = DEFAULT_MAX_RESULTS;
 		}

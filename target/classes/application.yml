@@ -4,7 +4,7 @@ server:
 # Spring MVC dispatcher servlet path. Needs to be different than Jersey's to enable/disable Actuator endpoints access (/info, /health, ...)
 server.servlet-path: /
 # Set the max result value for fetching books.
-books.max.results: 5
+max.results: 5
 # http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#production-ready-endpoints
 # http://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto-use-actuator-with-jersey
 endpoints:
